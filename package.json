@@ -1,5 +1,5 @@
 {
-  "name": "rrayytoon",
+  "name": "hamtoon",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -9,7 +9,12 @@
     "preview": "vite preview"
   },
   "devDependencies": {
+    "sass": "^1.85.0",
     "typescript": "~5.7.2",
     "vite": "^6.1.0"
+  },
+  "dependencies": {
+    "@popperjs/core": "^2.11.8",
+    "bootstrap": "^5.3.3"
   }
 }
