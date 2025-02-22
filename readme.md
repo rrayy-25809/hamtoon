@@ -1,0 +1,1 @@
+## Flask + Vite + Typescript = WTHHHH
