@@ -1,32 +1,40 @@
-import './style.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-import typescriptLogo from './typescript.svg';
-import viteLogo from './vite.svg';
-import { setupCounter } from './counter.ts';
+import './navbar';
 
-document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
-  <div class="container">
-    <div class="row">
-      <div class="col text-center">
-        <a href="https://vite.dev" target="_blank">
-          <img src="${viteLogo}" class="logo" alt="Vite logo" />
-        </a>
-        <a href="https://www.typescriptlang.org/" target="_blank">
-          <img src="${typescriptLogo}" class="logo vanilla" alt="TypeScript logo" />
-        </a>
-        <h1>Vite + TypeScript</h1>
-        <div class="card">
-          <div class="card-body">
-            <button id="counter" type="button" class="btn btn-primary">Counter</button>
-          </div>
-        </div>
-        <p class="read-the-docs">
-          Click on the Vite and TypeScript logos to learn more
-        </p>
-      </div>
-    </div>
-  </div>
-`
-
-setupCounter(document.querySelector<HTMLButtonElement>('#counter')!);
+document.addEventListener("DOMContentLoaded", () => {
+    const loginForm = document.getElementById("login-form");
+    const signupForm = document.getElementById("signup-form");
+  
+    if (loginForm) {
+      loginForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const formData = new FormData(loginForm as HTMLFormElement);
+        const response = await fetch("/login", {
+          method: "POST",
+          body: formData,
+        });
+        if (response.ok) {
+          window.location.href = "/";
+        } else {
+          alert("로그인 실패");
+        }
+      });
+    }
+  
+    if (signupForm) {
+      signupForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const formData = new FormData(signupForm as HTMLFormElement);
+        const response = await fetch("/signup", {
+          method: "POST",
+          body: formData,
+        });
+        if (response.ok) {
+          window.location.href = "/login";
+        } else {
+          alert("회원가입 실패");
+        }
+      });
+    }
+  });
