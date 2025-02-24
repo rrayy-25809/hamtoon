@@ -1,9 +1,9 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 import sqlite3
-from db_manager import db_manager
-import api_request
+from server.db_manager import db_manager
+import server.api_request
 
-flask = Flask(__name__, template_folder='../dist', static_folder='../dist/assets')
+flask = Flask(__name__, template_folder='../dist/client', static_folder='../dist/assets')
 flask.secret_key = 'LN$oaYB9-5KBT7G'
 db = db_manager(sqlite3.connect('server/db/user.db', check_same_thread=False))
 

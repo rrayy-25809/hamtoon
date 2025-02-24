@@ -1,6 +1,4 @@
-async function loadNavbar(): Promise<void> {
-    const title = document.title;
-
+function loadNavbar(): void {
     const navbarHtml = `
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
@@ -11,7 +9,7 @@ async function loadNavbar(): Promise<void> {
             <div class="collapse navbar-collapse" id="navbarText">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link ${title}" href="/">홈</a>
+                    <a class="nav-link ${"aw"}" href="/">홈</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/mypage">마이페이지</a>
@@ -23,13 +21,9 @@ async function loadNavbar(): Promise<void> {
             </div>
         </div>
     </nav>`;
-    const navbarPlaceholder = document.getElementById('navbar-placeholder');
 
-    if (navbarPlaceholder) {
-        navbarPlaceholder.innerHTML = navbarHtml;
-    } else {
-        console.error('Navbar placeholder element not found');
-    }
+    const navbarPlaceholder = document.getElementById('navbar-placeholder') as HTMLDivElement;
+    navbarPlaceholder.innerHTML = navbarHtml;
 }
 
-loadNavbar();
+export { loadNavbar };
