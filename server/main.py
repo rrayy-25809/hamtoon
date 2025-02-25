@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 import sqlite3
 from server.db_manager import db_manager
-import server.api_request
+import server.api_request as api
 
 flask = Flask(__name__, template_folder='../dist/client', static_folder='../dist/assets')
 flask.secret_key = 'LN$oaYB9-5KBT7G'
@@ -40,6 +40,10 @@ def logout():
     session.pop("user_id", None)
     return redirect(url_for("main"))
 
-if __name__ == '__main__':
-    db_manager.init_db()
-    flask.run(debug=True, host='0.0.0.0')
+@flask.route("get_user_info", methods=["POST"])
+def get_user_info():
+    return db.get_user_info(session["user_id"])
+
+@flask.route("today", methods=["POST"])
+def today():
+    return api.fetch_today_webtoon()

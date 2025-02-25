@@ -1,10 +1,10 @@
 import requests
 import json
 
-def fetch_webtoon_data():
-    base_url = "https://webtoon-crawler.nomadcoders.workers.dev"
-    endpoint = "today"
-    url = f"{base_url}/{endpoint}"
+base_url = "https://webtoon-crawler.nomadcoders.workers.dev"
+
+def fetch_today_webtoon():
+    url = base_url + "today" # 엔드포인트를 today로 설정
     
     try:
         response = requests.get(url)
@@ -15,11 +15,7 @@ def fetch_webtoon_data():
 
         data = response.json()  # JSON 데이터 파싱
         
-        # 웹툰 목록 출력
-        for webtoon in data:
-            title = webtoon.get("title", "제목 없음")
-            author = webtoon.get("author", "작가 미상")
-            print(f"제목: {title}, 작가: {author}")
+        return data
     
     except requests.exceptions.HTTPError as http_err:
         print(f"HTTP 에러 발생: {http_err}")
@@ -27,7 +23,8 @@ def fetch_webtoon_data():
         print(f"요청 에러 발생: {req_err}")
     except json.JSONDecodeError as json_err:
         print(f"JSON 디코딩 에러 발생: {json_err}")
-
-# 함수 실행
-if __name__ == "__main__":
-    fetch_webtoon_data()
+\
+def fetch_webtoon_detail(webtoon_id):
+    # 웹툰 상세 정보 API 요청
+    endpoint = "today"
+    url = f"{base_url}/{endpoint}"

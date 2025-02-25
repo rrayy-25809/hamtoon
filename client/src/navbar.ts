@@ -1,4 +1,9 @@
-function loadNavbar(): void {
+function loadNavbar(detect:any):void {
+    let login:string ='';
+    if (detect.is_login()){
+        login = '어 뭐였지'
+    }   //진짜 코드 겁내 막 쓴다 ㅋㅋㅋㅋㅋ
+
     const navbarHtml = `
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
@@ -9,7 +14,7 @@ function loadNavbar(): void {
             <div class="collapse navbar-collapse" id="navbarText">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link ${"aw"}" href="/">홈</a>
+                    <a class="nav-link ${login}" href="/">홈</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/mypage">마이페이지</a>
