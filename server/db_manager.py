@@ -21,15 +21,11 @@ class db_manager:
         self.conn.commit()
 
     def get_user_info(self, user_id:str):
-        self.cursor.execute("SELECT * FROM users WHERE id = ?", (user_id))
+        self.cursor.execute("SELECT * FROM users WHERE id = ?", (user_id,))
         #TODO: 유저 정보 가져와서 리턴하기, 없으면 None 리턴
-        if (self.cursor.fetchone()):
-            return None
-        else:
-            return None
-        #return self.cursor.fetchone()
+        result = self.cursor.fetchone()
+        return result
         
-    
     def login(self, user_id:str, password:str) -> bool:
         self.cursor.execute("SELECT * FROM users WHERE id = ? AND password = ?", (user_id, password))
         return self.cursor.fetchone()
@@ -42,3 +38,7 @@ class db_manager:
             return True
         except IntegrityError:
             return False
+
+    def delete_acc(self, user_id:str):
+        self.cursor.execute("DELETE FROM users WHERE id = ?", (user_id,))
+        self.conn.commit()

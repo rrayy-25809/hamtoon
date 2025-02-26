@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session, jsonify
 import sqlite3
 from server.db_manager import db_manager
 import server.api_request as api
@@ -13,7 +13,11 @@ def main():
 
 @flask.route("/mypage")
 def mypage():
-    return render_template("mypage.html")
+    try:
+        info = db.get_user_info(session["user_id"])
+        return render_template("mypage.html", name = info[2], bookmark = info[3])
+    except KeyError:
+        return "로그인이 필요합니다.", 401
 
 @flask.route("/login", methods=["GET", "POST"])
 def login():
@@ -24,6 +28,8 @@ def login():
             return redirect(url_for("main"))
         else:
             return "로그인 실패", 401
+    elif "user_id" in session:
+        return "이미 로그인되어 있습니다.", 400
     return render_template("login.html")
 
 @flask.route("/signup", methods=["GET", "POST"])
@@ -40,10 +46,16 @@ def logout():
     session.pop("user_id", None)
     return redirect(url_for("main"))
 
-@flask.route("get_user_info", methods=["POST"])
-def get_user_info():
-    return db.get_user_info(session["user_id"])
+@flask.route("/delete_acc")
+def delete_acc():
+    db.delete_acc(session["user_id"])
+    session.pop("user_id", None)
+    return redirect(url_for("main"))
 
-@flask.route("today", methods=["POST"])
+@flask.route("/today", methods=["POST"])
 def today():
-    return api.fetch_today_webtoon()
+    return jsonify(api.fetch_today_webtoon())\
+    
+@flask.route("/webtoon/<int:webtoon_id>")
+def webtoon_detail(webtoon_id):
+    return jsonify(api.fetch_webtoon_detail(webtoon_id))

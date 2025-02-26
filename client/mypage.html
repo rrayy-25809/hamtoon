@@ -7,6 +7,11 @@
   </head>
   <body>
     <div id="navbar-placeholder"></div>
+    <div class="container mt-3">
+      <h2>{{ name }}</h2>
+      <a type="button" class="btn btn-danger" href="/delete_acc">계정 제거</a>
+      <a type="button" class="btn btn-outline-danger" href="/logout">로그아웃</a>
+    </div>
     <div id="list"></div>
     <script type="module" src="src/main.ts"></script>
   </body>

@@ -1,8 +1,5 @@
-function loadNavbar(detect:any):void {
+function loadNavbar():void {
     let login:string ='';
-    if (detect.is_login()){
-        login = '어 뭐였지'
-    }   //진짜 코드 겁내 막 쓴다 ㅋㅋㅋㅋㅋ
 
     const navbarHtml = `
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
