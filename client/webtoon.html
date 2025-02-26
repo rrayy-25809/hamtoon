@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hamtoon-웹툰_{{ title }}</title>
+  </head>
+  <body>
+    <div id="navbar-placeholder"></div>
+    <div class="card container" style="width: 500px; margin-top: 50px;">
+        <img src="{{ thumbnail }}" class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">{{ title }}</h5>
+          <p class="card-text">
+            {{ description }}<br/>
+            <span class="badge text-bg-info">{{ genre }}</span><br/>
+            <span class="badge text-bg-warning">{{ age }}</span>
+          </p>
+          <a href="https://comic.naver.com/webtoon/list?titleId={{ id }}" class="btn" style="background-color: #00d564;" id="go-to-webtoon">
+            <img style="width: 25px;" src="https://i.namu.wiki/i/ugTlJol27avmPIWdkWY3fk18VR1J7BPr_AwwIKaF8fu2v9VW2Bmto6jQungo__wBfkhNMOGMDfemB_D1nctdyw.svg" />
+            웹툰 보러가기
+        </a>
+        </div>
+      </div>
+    <script type="module" src="src/main.ts"></script>
+  </body>
+</html>

@@ -54,8 +54,21 @@ def delete_acc():
 
 @flask.route("/today", methods=["POST"])
 def today():
-    return jsonify(api.fetch_today_webtoon())\
+    return jsonify(api.fetch_today_webtoon())
     
 @flask.route("/webtoon/<int:webtoon_id>")
-def webtoon_detail(webtoon_id):
-    return jsonify(api.fetch_webtoon_detail(webtoon_id))
+def webtoon_id(webtoon_id):
+    # Get webtoon details from API
+    webtoon = api.fetch_webtoon_detail(webtoon_id)
+    
+    # Extract required information
+    webtoon_data = {
+        'title': webtoon['title'],
+        'description': webtoon['about'],
+        'thumbnail': webtoon['thumb'],
+        'genre': webtoon['genre'],
+        'age': webtoon['age'],
+        'id': webtoon_id
+    }
+    
+    return render_template("webtoon.html", **webtoon_data)

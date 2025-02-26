@@ -22,7 +22,6 @@ class db_manager:
 
     def get_user_info(self, user_id:str):
         self.cursor.execute("SELECT * FROM users WHERE id = ?", (user_id,))
-        #TODO: 유저 정보 가져와서 리턴하기, 없으면 None 리턴
         result = self.cursor.fetchone()
         return result
         
@@ -42,3 +41,4 @@ class db_manager:
     def delete_acc(self, user_id:str):
         self.cursor.execute("DELETE FROM users WHERE id = ?", (user_id,))
         self.conn.commit()
+        self.conn.close()
