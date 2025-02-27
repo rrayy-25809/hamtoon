@@ -15,7 +15,7 @@ def main():
 def mypage():
     try:
         info = db.get_user_info(session["user_id"])
-        return render_template("mypage.html", name = info[2], bookmark = info[3])
+        return render_template("mypage.html", name = info[2])
     except KeyError:
         return "로그인이 필요합니다.", 401
 
@@ -52,10 +52,6 @@ def delete_acc():
     session.pop("user_id", None)
     return redirect(url_for("main"))
 
-@flask.route("/today", methods=["POST"])
-def today():
-    return jsonify(api.fetch_today_webtoon())
-    
 @flask.route("/webtoon/<int:webtoon_id>")
 def webtoon_id(webtoon_id):
     # Get webtoon details from API
@@ -72,3 +68,27 @@ def webtoon_id(webtoon_id):
     }
     
     return render_template("webtoon.html", **webtoon_data)
+
+@flask.route("/today", methods=["POST"])
+def today():
+    return jsonify(api.fetch_today_webtoon())
+
+@flask.route("/bookmark", methods=["POST"])
+def bookmark():
+    bookmark = db.get_user_info(session["user_id"])[3]
+    # for i in bookmark:
+    #     api.fetch_webtoon_detail(i)
+    #     
+    return jsonify(api.fetch_today_webtoon())
+
+@flask.route("/add_bookmark", methods=["POST"])
+def add_bookmark():
+    db.add_bookmark(session["user_id"], request.form["webtoon_id"])
+    return "OK"
+
+@flask.after_request
+def add_security_headers(response):
+    response.headers['X-Content-Type-Options'] = 'nosniff'
+    response.headers['X-Frame-Options'] = 'SAMEORIGIN'
+    response.headers['X-XSS-Protection'] = '1; mode=block'
+    return response

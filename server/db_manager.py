@@ -42,3 +42,16 @@ class db_manager:
         self.cursor.execute("DELETE FROM users WHERE id = ?", (user_id,))
         self.conn.commit()
         self.conn.close()
+
+    def add_bookmark(self, user_id:str, webtoon_id:int):
+        self.cursor.execute("SELECT bookmark FROM users WHERE id = ?", (user_id,))
+        bookmark = self.cursor.fetchone()[0]
+        if bookmark:
+            bookmark = bookmark.split(',')
+            if str(webtoon_id) not in bookmark:
+                bookmark.append(str(webtoon_id))
+        else:
+            bookmark = [str(webtoon_id)]
+        self.cursor.execute("UPDATE users SET bookmark = ? WHERE id = ?", (','.join(bookmark), user_id))
+        self.conn.commit()
+        self.cursor.close()

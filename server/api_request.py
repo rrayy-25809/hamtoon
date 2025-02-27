@@ -5,7 +5,7 @@ import html
 base_url = "https://webtoon-crawler.nomadcoders.workers.dev"
 
 def fetch_today_webtoon():
-    url = base_url + "today" # 엔드포인트를 today로 설정
+    url = base_url + "/today" # 엔드포인트를 today로 설정
     
     try:
         response = requests.get(url)

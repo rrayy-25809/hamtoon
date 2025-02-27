@@ -1,18 +1,33 @@
-const listElement = document.getElementById('list');
-if (listElement) {
-  listElement.innerHTML = `
-    <div class="row row-cols-1 row-cols-md-3 g-4">
-      <div class="col">
-        <div class="card">
-        <img src="..." class="card-img-top" alt="...">
-        <div class="card-body">
-          <h5 class="card-title">Card title</h5>
+const listElement = document.getElementById('list') as HTMLDivElement;
+
+async function getToday(): Promise<string> {
+  let webtoon:string = '';
+  const response = await fetch("/today", {
+    method: "POST"
+  });
+  if (response.ok) {
+    const data = await response.json();
+    console.log(data);
+    data.forEach((item: any) => {
+      webtoon += `
+      <a href="/webtoon/${item['id']}">
+        <div class="col">
+          <div class="card" style="margin-top: 10px;">
+            <img src="${item["thumb"]}" class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title">${item['title']}</h5>
+            </div>
+          </div>
         </div>
-      </div>
-      <div class="col"></div>
-      <div class="col"></div>
-    </div>
-  `;
+      </a>
+      `;
+    });
+  } else {
+    alert("정보를 불러오는데 실패했습니다.");
+  }
+  return webtoon;
 }
 
-//TODO: list라는 ID를 가진 얘 한테 <div class="row row-cols-1 row-cols-md-3 g-4"> 넣기, 반복문으로 n개의 col 넣기
+getToday().then(result => {
+  listElement.innerHTML = result;
+});
