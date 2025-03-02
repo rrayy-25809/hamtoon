@@ -16,12 +16,19 @@
             <span class="badge text-bg-info">{{ genre }}</span><br/>
             <span class="badge text-bg-warning">{{ age }}</span>
           </p>
-          <a href="https://comic.naver.com/webtoon/list?titleId={{ id }}" class="btn" style="background-color: #00d564;" id="go-to-webtoon">
-            <img style="width: 25px;" src="https://i.namu.wiki/i/ugTlJol27avmPIWdkWY3fk18VR1J7BPr_AwwIKaF8fu2v9VW2Bmto6jQungo__wBfkhNMOGMDfemB_D1nctdyw.svg" />
-            웹툰 보러가기
-        </a>
+          <div class="d-flex gap-2">
+            <a href="https://comic.naver.com/webtoon/list?titleId={{ id }}" class="btn" style="background-color: #00d564;" id="go-to-webtoon">
+              <img style="width: 25px;" src="https://i.namu.wiki/i/ugTlJol27avmPIWdkWY3fk18VR1J7BPr_AwwIKaF8fu2v9VW2Bmto6jQungo__wBfkhNMOGMDfemB_D1nctdyw.svg" />
+              웹툰 보러가기
+            </a>
+            <button class="btn btn-outline-primary" id="bookmark-btn">
+              <i class="bi bi-bookmark"></i>
+              북마크
+            </button>
+          </div>
         </div>
       </div>
     <script type="module" src="src/main.ts"></script>
+    <script type="module" src="src/bookmark.ts"></script>
   </body>
 </html>

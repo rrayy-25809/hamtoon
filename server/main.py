@@ -75,16 +75,25 @@ def today():
 
 @flask.route("/bookmark", methods=["POST"])
 def bookmark():
-    bookmark = db.get_user_info(session["user_id"])[3]
-    # for i in bookmark:
-    #     api.fetch_webtoon_detail(i)
-    #     
-    return jsonify(api.fetch_today_webtoon())
+    user_info = db.get_user_info(session["user_id"])
+    bookmark = user_info[3] if user_info else ""
+    bookmark_list = []
+    for i in bookmark.split(","):
+        bookmark_list.append(api.fetch_webtoon_detail(i))
+    
+    return jsonify(bookmark_list)
 
 @flask.route("/add_bookmark", methods=["POST"])
 def add_bookmark():
-    db.add_bookmark(session["user_id"], request.form["webtoon_id"])
-    return "OK"
+    try:
+        db.add_bookmark(session["user_id"], request.form["webtoon_id"])
+        return "added", 200
+    except KeyError:
+        return "로그인이 필요합니다.", 401
+    except sqlite3.IntegrityError:
+        return "이미 추가된 웹툰입니다.", 400 #TODO: 에러 대신 북마크를 지울 수 있도록 변경
+    except Exception as e:
+        return str(e), 500
 
 @flask.after_request
 def add_security_headers(response):

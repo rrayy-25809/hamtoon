@@ -20,7 +20,7 @@ class db_manager:
         ''')
         self.conn.commit()
 
-    def get_user_info(self, user_id:str):
+    def get_user_info(self, user_id:str) -> list[str]:
         self.cursor.execute("SELECT * FROM users WHERE id = ?", (user_id,))
         result = self.cursor.fetchone()
         return result
@@ -33,7 +33,6 @@ class db_manager:
         try:
             self.cursor.execute("INSERT INTO users (id, password, nickname) VALUES (?, ?, ?)", (user_id, password, nickname))
             self.conn.commit()
-            self.cursor.close()
             return True
         except IntegrityError:
             return False
@@ -41,17 +40,18 @@ class db_manager:
     def delete_acc(self, user_id:str):
         self.cursor.execute("DELETE FROM users WHERE id = ?", (user_id,))
         self.conn.commit()
-        self.conn.close()
 
-    def add_bookmark(self, user_id:str, webtoon_id:int):
-        self.cursor.execute("SELECT bookmark FROM users WHERE id = ?", (user_id,))
-        bookmark = self.cursor.fetchone()[0]
+    def add_bookmark(self, user_id: str, webtoon_id: int):
+        user_info = self.get_user_info(user_id)
+        bookmark = user_info[3] if user_info else []
+        
         if bookmark:
-            bookmark = bookmark.split(',')
-            if str(webtoon_id) not in bookmark:
-                bookmark.append(str(webtoon_id))
+            bookmark_list = bookmark.split(',')
+            if str(webtoon_id) not in bookmark_list:
+                bookmark_list.append(str(webtoon_id))
         else:
-            bookmark = [str(webtoon_id)]
-        self.cursor.execute("UPDATE users SET bookmark = ? WHERE id = ?", (','.join(bookmark), user_id))
+            bookmark_list = [str(webtoon_id)]
+            
+        bookmark_str = ','.join(bookmark_list)
+        self.cursor.execute("UPDATE users SET bookmark = ? WHERE id = ?", (bookmark_str, user_id))
         self.conn.commit()
-        self.cursor.close()
