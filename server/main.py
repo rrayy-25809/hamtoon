@@ -80,7 +80,7 @@ def bookmark():
     bookmark_list = []
     for i in bookmark.split(","):
         bookmark_list.append(api.fetch_webtoon_detail(i))
-    
+    print(bookmark_list)
     return jsonify(bookmark_list)
 
 @flask.route("/add_bookmark", methods=["POST"])
@@ -91,7 +91,8 @@ def add_bookmark():
     except KeyError:
         return "로그인이 필요합니다.", 401
     except sqlite3.IntegrityError:
-        return "이미 추가된 웹툰입니다.", 400 #TODO: 에러 대신 북마크를 지울 수 있도록 변경
+        db.remove_bookmark(session["user_id"], request.form["webtoon_id"])
+        return "removed", 200
     except Exception as e:
         return str(e), 500
 

@@ -55,3 +55,18 @@ class db_manager:
         bookmark_str = ','.join(bookmark_list)
         self.cursor.execute("UPDATE users SET bookmark = ? WHERE id = ?", (bookmark_str, user_id))
         self.conn.commit()
+    
+    def remove_bookmark(self, user_id: str, webtoon_id: int):
+        user_info = self.get_user_info(user_id)
+        bookmark = user_info[3] if user_info else []
+
+        if bookmark:
+            bookmark_list = bookmark.split(',')
+            if str(webtoon_id) in bookmark_list:
+                bookmark_list.remove(str(webtoon_id))
+                bookmark_str = ','.join(bookmark_list)
+                self.cursor.execute("UPDATE users SET bookmark = ? WHERE id = ?", (bookmark_str, user_id))
+                self.conn.commit()
+                return True
+        return False
+    

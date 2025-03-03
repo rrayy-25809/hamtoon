@@ -11,7 +11,11 @@ bookmark_btn.addEventListener("click", async () => {
     });
     if (response.ok) {
         const responseText = await response.text();
-        console.log(responseText);
+        if (responseText === "added") {
+            alert("북마크에 추가되었습니다.");
+        } else {
+            alert("북마크에서 제거되었습니다.");
+        }
     } else {
         const responseText = await response.text();
         alert(`북마크에 실패했습니다. ${responseText}`);
