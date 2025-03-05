@@ -4,7 +4,7 @@ import html
 
 base_url = "https://webtoon-crawler.nomadcoders.workers.dev"
 
-def fetch_today_webtoon():
+def fetch_today_webtoon() -> dict | None:
     url = base_url + "/today" # 엔드포인트를 today로 설정
     
     try:
@@ -46,7 +46,7 @@ def fetch_webtoon_detail(webtoon_id) -> dict | None:
     except json.JSONDecodeError as json_err:
         print(f"JSON 디코딩 에러 발생: {json_err}")
 
-def fetch_webtoon_episode(webtoon_id):
+def fetch_webtoon_episode(webtoon_id) -> dict | None:
     # 웹툰 에피소드 목록 API 요청
     url = f"{base_url}/{webtoon_id}/episodes"
 
@@ -57,6 +57,8 @@ def fetch_webtoon_episode(webtoon_id):
         print("응답 상태 코드:", response.status_code)
         
         detail = response.json()  # JSON 데이터 파싱
+
+        #return detail
         print(detail[0])
 
     except requests.exceptions.HTTPError as http_err:
@@ -67,4 +69,4 @@ def fetch_webtoon_episode(webtoon_id):
         print(f"JSON 디코딩 에러 발생: {json_err}")
 
 if __name__ == "__main__":
-    fetch_webtoon_episode(835531)
+    print(fetch_webtoon_episode(824888))

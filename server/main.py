@@ -95,6 +95,10 @@ def add_bookmark():
         return "removed", 200
     except Exception as e:
         return str(e), 500
+    
+@flask.route("/episode", methods=["POST"])
+def episode():
+    return jsonify(api.fetch_webtoon_episode(request.form["webtoon_id"]))
 
 @flask.after_request
 def add_security_headers(response):
