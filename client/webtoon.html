@@ -17,7 +17,7 @@
             <span class="badge text-bg-warning">{{ age }}</span>
           </p>
           <div class="d-flex gap-2">
-            <a href="https://comic.naver.com/webtoon/list?titleId={{ id }}" class="btn" style="background-color: #00d564;" id="go-to-webtoon">
+            <a href="https://comic.naver.com/webtoon/list?titleId={{ id }}" class="btn" style="background-color: #00d564;" id="go-to-webtoon" target='_blank'>
               <img style="width: 25px;" src="https://i.namu.wiki/i/ugTlJol27avmPIWdkWY3fk18VR1J7BPr_AwwIKaF8fu2v9VW2Bmto6jQungo__wBfkhNMOGMDfemB_D1nctdyw.svg" />
               웹툰 보러가기
             </a>
@@ -32,13 +32,11 @@
       <div class="container" style="width: 800px;">
         <h3>에피소드</h3>
         <div class="row row-cols-1 row-cols-md-3 g-4" id="episode-list">
-          <div class="col alert alert-success">
-            <a href="https://comic.naver.com/webtoon/detail?titleId={{ id }}&no=1" class="alert-link">에피소드 1화</a>
-          </div>
         </div>
       </div>
     </div>
     <script type="module" src="src/main.ts"></script>
     <script type="module" src="src/bookmark.ts"></script>
+    <script type="module" src="src/episode.ts"></script>
   </body>
 </html>

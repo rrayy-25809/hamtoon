@@ -12,11 +12,16 @@ async function getEpisode(): Promise<string> {
     if (response.ok) {
         const data = await response.json();
         console.log(data);
-        data.forEach((item: any) => {
-            episodes += `
-            ${item.title}
-            `;
-        });
+        if (Array.isArray(data)) { // data가 배열인지 확인
+            data.forEach((item: any) => {
+                episodes += `
+                <div class="col alert alert-success" style="width: 800px;">
+                    <a href="https://comic.naver.com/webtoon/detail?titleId=${webtoon_id}&no=${item.id}" class="alert-link" target='_blank'>${item.title}</a>
+                </div>`;
+            });
+        } else {
+            alert("에피소드 정보를 불러오는데 실패했습니다.");
+        }
     } else {
         alert("정보를 불러오는데 실패했습니다.");
     }

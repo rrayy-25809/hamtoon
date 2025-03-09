@@ -60,6 +60,7 @@ def fetch_webtoon_episode(webtoon_id) -> dict | None:
 
         #return detail
         print(detail[0])
+        return detail
 
     except requests.exceptions.HTTPError as http_err:
         print(f"HTTP 에러 발생: {http_err}")
