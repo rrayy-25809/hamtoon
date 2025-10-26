@@ -1,9 +1,6 @@
-from sqlite3 import Connection, IntegrityError, Cursor
+from duckdb import DuckDBPyConnection as Connection
 
 class db_manager:
-    conn:Connection = None
-    cursor:Cursor = None
-
     def __init__(self, conn:Connection):
         self.conn = conn
         self.cursor = conn.cursor()
@@ -22,19 +19,19 @@ class db_manager:
 
     def get_user_info(self, user_id:str) -> list[str]:
         self.cursor.execute("SELECT * FROM users WHERE id = ?", (user_id,))
-        result = self.cursor.fetchone()
-        return result
+        return self.cursor.fetchone() # type: ignore
         
     def login(self, user_id:str, password:str) -> bool:
         self.cursor.execute("SELECT * FROM users WHERE id = ? AND password = ?", (user_id, password))
-        return self.cursor.fetchone()
+        return self.cursor.fetchone() # type: ignore
 
     def signup(self, user_id:str, password:str, nickname:str) -> bool:
         try:
             self.cursor.execute("INSERT INTO users (id, password, nickname) VALUES (?, ?, ?)", (user_id, password, nickname))
             self.conn.commit()
             return True
-        except IntegrityError:
+        except Exception as e:
+            print(e)
             return False
 
     def delete_acc(self, user_id:str):
@@ -43,7 +40,7 @@ class db_manager:
 
     def add_bookmark(self, user_id: str, webtoon_id: int):
         user_info = self.get_user_info(user_id)
-        bookmark = user_info[3] if user_info else []
+        bookmark:str = user_info[3] if user_info else [] # type: ignore
         
         if bookmark:
             bookmark_list = bookmark.split(',')
@@ -58,8 +55,8 @@ class db_manager:
     
     def remove_bookmark(self, user_id: str, webtoon_id: int):
         user_info = self.get_user_info(user_id)
-        bookmark = user_info[3] if user_info else []
-
+        bookmark:str = user_info[3] if user_info else [] # type: ignore
+        
         if bookmark:
             bookmark_list = bookmark.split(',')
             if str(webtoon_id) in bookmark_list:

@@ -55,12 +55,8 @@ def fetch_webtoon_episode(webtoon_id) -> dict | None:
         response.raise_for_status()  # HTTP 에러 발생 시 예외 처리
 
         print("응답 상태 코드:", response.status_code)
-        
-        detail = response.json()  # JSON 데이터 파싱
 
-        #return detail
-        print(detail[0])
-        return detail
+        return response.json()  # JSON 데이터 파싱
 
     except requests.exceptions.HTTPError as http_err:
         print(f"HTTP 에러 발생: {http_err}")

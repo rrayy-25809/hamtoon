@@ -1,11 +1,11 @@
 from flask import Flask, render_template, request, redirect, url_for, session, jsonify
-import sqlite3
+import duckdb
 from server.db_manager import db_manager
 import server.api_request as api
 
 flask = Flask(__name__, template_folder='../dist/client', static_folder='../dist/assets')
 flask.secret_key = 'LN$oaYB9-5KBT7G'
-db = db_manager(sqlite3.connect('server/db/user.db', check_same_thread=False))
+db = db_manager(duckdb.connect('server/db/user.db'))
 
 @flask.route("/")
 def main():
@@ -59,11 +59,7 @@ def webtoon_id(webtoon_id):
     
     # Extract required information
     webtoon_data = {
-        'title': webtoon['title'],
-        'description': webtoon['about'],
-        'thumbnail': webtoon['thumb'],
-        'genre': webtoon['genre'],
-        'age': webtoon['age'],
+        **webtoon, # type: ignore
         'id': webtoon_id
     }
     
@@ -86,13 +82,17 @@ def bookmark():
 @flask.route("/add_bookmark", methods=["POST"])
 def add_bookmark():
     try:
-        db.add_bookmark(session["user_id"], request.form["webtoon_id"])
-        return "added", 200
+        user_info = db.get_user_info(session["user_id"])
+        bookmark = user_info[3] if user_info else ""
+        bookmark_list = bookmark.split(",") if bookmark else []
+        if not request.form["webtoon_id"] in bookmark_list:
+            db.add_bookmark(session["user_id"], request.form["webtoon_id"]) # type: ignore
+            return "added", 200
+        else:
+            db.remove_bookmark(session["user_id"], request.form["webtoon_id"]) # type: ignore
+            return "removed", 200
     except KeyError:
         return "로그인이 필요합니다.", 401
-    except sqlite3.IntegrityError:
-        db.remove_bookmark(session["user_id"], request.form["webtoon_id"])
-        return "removed", 200
     except Exception as e:
         return str(e), 500
     
