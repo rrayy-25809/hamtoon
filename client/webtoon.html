@@ -7,7 +7,8 @@
   </head>
   <body>
     <div id="navbar-placeholder"></div>
-    <div class="card container" style="width: 500px; margin-top: 50px;">
+    <main class="container my-4">
+      <div class="card" style="max-width: 700px; margin: 0 auto;">
         <img src="{{ thumbnail }}" class="card-img-top" alt="...">
         <div class="card-body">
           <h5 class="card-title">{{ title }}</h5>
@@ -28,13 +29,13 @@
           </div>
         </div>
       </div>
-    <div id="episode-placeholder">
-      <div class="container" style="width: 800px;">
-        <h3>에피소드</h3>
-        <div class="row row-cols-1 row-cols-md-3 g-4" id="episode-list">
+      <section id="episode-placeholder" class="mt-5">
+        <div class="container" style="max-width: 900px;">
+          <h3 class="section-title">에피소드</h3>
+          <div class="row row-cols-1 row-cols-md-3 g-4" id="episode-list"></div>
         </div>
-      </div>
-    </div>
+      </section>
+    </main>
     <script type="module" src="src/main.ts"></script>
     <script type="module" src="src/bookmark.ts"></script>
     <script type="module" src="src/episode.ts"></script>

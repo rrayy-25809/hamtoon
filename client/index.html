@@ -7,8 +7,22 @@
   </head>
   <body>
     <div id="navbar-placeholder"></div>
-    <h3>오늘의 웹툰</h3>
-    <div id="list" class="row row-cols-2 row-cols-lg-5 g-2 g-lg-3" style="width: 100%;"></div>
+    <main class="container mt-4">
+      <section class="hero">
+        <div class="container d-flex justify-content-between align-items-center">
+          <div>
+            <h1>오늘의 웹툰</h1>
+            <p class="text-muted">오늘 올라온 인기 작품을 만나보세요.</p>
+          </div>
+          <div class="search">
+            <input id="search-input" class="form-control" type="search" placeholder="웹툰 검색 (제목 입력)" aria-label="Search" />
+          </div>
+        </div>
+      </section>
+
+      <h3 class="section-title">추천</h3>
+      <div id="list" class="row row-cols-2 row-cols-lg-5 g-3" style="width: 100%;"></div>
+    </main>
     <script type="module" src="src/main.ts"></script>
     <script type="module" src="src/List_main.ts"></script>
   </body>
