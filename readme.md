@@ -3,27 +3,22 @@
 - 참고 : [플러터로 웹툰 앱 만들기 노마드 코더](https://nomadcoders.co/flutter-for-beginners)
 - 플러터로 제작된 강의인데 난 플러터 모르고 근데 만들어보고 싶어서 API만 쏙 빼옴
 
+- “함” 시리즈
+    
+    함무비: https://github.com/rrayy-25809/hammovie
+    
+    함랭: https://github.com/rrayy-25809/Hamlang.py
+    
+    함랭.웹: https://github.com/rrayy-25809/Hamlang.ts
+    
 ### 사용한 프로그래밍 언어
 
 - Python - 3.12
-- Typescript - 버전 모름ㄴ아ㅓ런래저
+- Typescript - 5.7.2
 
 ### 사용한 라이브러리
 
-- Vite - 바닐라 + 부트스트랩
-- Flask - 얘도 버전 몰ㅇ라아ㅣㅓ
-- sqlite - DB 저장하려고
-
-### 구현할 내용
-
-- [x]  Vite + Flask 동기화
-- [x]  회원가입
-- [X]  로그인
-- [X]  로그아웃
-- [X]  계정 삭제
-- [X]  오늘 업데이트 된 웹툰 리스트 보여주기
-- [X]  웹툰 상세 정보 보여주기
-- [X]  웹툰 에피소드 목록 보여주기
-- [X]  웹툰 북마크 추가/제거
-- [X]  북마크 목록 보여주기
-- [X]  네이버 웹툰으로 이동시켜서 웹툰 보여주기
+- Vite - 바닐라(6.4.1) + 부트스트랩(5.3.3)
+- Flask - 3.1.1
+- Duck DB - 1.4.1
+- 등등
