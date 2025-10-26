@@ -1,11 +1,17 @@
 from flask import Flask, render_template, request, redirect, url_for, session, jsonify
 import duckdb
+from flask_bcrypt import Bcrypt
 from server.db_manager import db_manager
 import server.api_request as api
+import os
+from dotenv import load_dotenv
 
+load_dotenv()
 flask = Flask(__name__, template_folder='../dist/client', static_folder='../dist/assets')
-flask.secret_key = 'LN$oaYB9-5KBT7G'
+flask.secret_key = os.getenv("FLASK_KEY")
+bcrypt = Bcrypt(flask)
 db = db_manager(duckdb.connect('server/db/user.db'))
+# db.init_db()
 
 @flask.route("/")
 def main():
@@ -23,7 +29,9 @@ def mypage():
 def login():
     if request.method == "POST":
         user_id = request.form["id"]
-        if db.login(user_id, request.form["password"]):
+        password:str = request.form["password"] # type: ignore
+
+        if bcrypt.check_password_hash(db.get_password_hash(user_id), password):
             session["user_id"] = user_id
             return redirect(url_for("main"))
         else:
@@ -35,7 +43,10 @@ def login():
 @flask.route("/signup", methods=["GET", "POST"])
 def signup():
     if request.method == "POST":
-        if db.signup(request.form["id"], request.form["password"], request.form["nickname"]):
+        user_id = request.form["id"]
+        password:str = request.form["password"] # type: ignore
+
+        if db.signup(user_id, bcrypt.generate_password_hash(password), request.form["nickname"]):
             return redirect(url_for("login"))
         else:
             return "이미 존재하는 아이디입니다.", 400
@@ -54,10 +65,8 @@ def delete_acc():
 
 @flask.route("/webtoon/<int:webtoon_id>")
 def webtoon_id(webtoon_id):
-    # Get webtoon details from API
     webtoon = api.fetch_webtoon_detail(webtoon_id)
     
-    # Extract required information
     webtoon_data = {
         **webtoon, # type: ignore
         'id': webtoon_id
@@ -72,11 +81,11 @@ def today():
 @flask.route("/bookmark", methods=["POST"])
 def bookmark():
     user_info = db.get_user_info(session["user_id"])
-    bookmark = user_info[3] if user_info else ""
+    bookmark = user_info[3]
     bookmark_list = []
-    for i in bookmark.split(","):
-        bookmark_list.append(api.fetch_webtoon_detail(i))
-    print(bookmark_list)
+    if bookmark:
+        for i in bookmark.split(","):
+            bookmark_list.append(api.fetch_webtoon_detail(i))
     return jsonify(bookmark_list)
 
 @flask.route("/add_bookmark", methods=["POST"])

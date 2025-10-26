@@ -7,8 +7,9 @@ class db_manager:
 
     # SQLite 데이터베이스 초기화
     def init_db(self):
+        self.cursor.execute('DROP TABLE users;') # users 테이블 자체를 삭제
         self.cursor.execute('''
-            CREATE TABLE IF NOT EXISTS users (
+            CREATE TABLE users (
                 "id" TEXT PRIMARY KEY,
                 "password" TEXT,
                 "nickname" TEXT,
@@ -21,11 +22,13 @@ class db_manager:
         self.cursor.execute("SELECT * FROM users WHERE id = ?", (user_id,))
         return self.cursor.fetchone() # type: ignore
         
-    def login(self, user_id:str, password:str) -> bool:
-        self.cursor.execute("SELECT * FROM users WHERE id = ? AND password = ?", (user_id, password))
-        return self.cursor.fetchone() # type: ignore
+    def get_password_hash(self, user_id:str) -> bytes:
+        self.cursor.execute("SELECT password FROM users WHERE id = ?", (user_id,))
+        pw_hash = self.cursor.fetchone()
+        return pw_hash[0] if pw_hash else None # type: ignore
 
-    def signup(self, user_id:str, password:str, nickname:str) -> bool:
+    def signup(self, user_id:str, password:bytes, nickname:str) -> bool:
+        print(password)
         try:
             self.cursor.execute("INSERT INTO users (id, password, nickname) VALUES (?, ?, ?)", (user_id, password, nickname))
             self.conn.commit()
